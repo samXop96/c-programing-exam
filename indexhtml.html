@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>C Programming MCQ Exam</title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; }
+        .container { width: 60%; margin: auto; padding: 20px; }
+        .question { text-align: left; margin-bottom: 10px; }
+        .timer { font-size: 20px; color: red; font-weight: bold; }
+        .submit-btn { margin-top: 20px; padding: 10px 20px; font-size: 16px; }
+    </style>
+    <script>
+        let timeLeft = 3600; // 1 hour in seconds
+        function startTimer() {
+            let timerInterval = setInterval(function () {
+                let minutes = Math.floor(timeLeft / 60);
+                let seconds = timeLeft % 60;
+                document.getElementById("timer").innerText = `Time Left: ${minutes}m ${seconds}s`;
+                if (timeLeft <= 0) {
+                    clearInterval(timerInterval);
+                    alert("Time's up! Submitting your answers.");
+                    document.getElementById("quizForm").submit();
+                }
+                timeLeft--;
+            }, 1000);
+        }
+
+        function submitExam() {
+            let score = 0;
+            let answers = {
+                1: "b", 2: "b", 3: "a", 4: "a", 5: "a", 6: "b", 7: "b", 8: "a", 9: "a", 10: "a",
+                11: "b", 12: "b", 13: "a", 14: "a", 15: "a", 16: "b", 17: "b", 18: "a", 19: "a", 20: "a",
+                21: "b", 22: "b", 23: "a", 24: "a", 25: "a", 26: "b", 27: "b", 28: "a", 29: "a", 30: "a",
+                31: "b", 32: "b", 33: "a", 34: "a", 35: "a", 36: "b", 37: "b", 38: "a", 39: "a", 40: "a",
+                41: "b", 42: "b", 43: "a", 44: "a", 45: "a", 46: "b", 47: "b", 48: "a", 49: "a", 50: "a"
+            };
+            let form = document.getElementById("quizForm");
+            let results = {};
+            for (let i in answers) {
+                let selected = form.querySelector(`input[name='q${i}']:checked`);
+                results[i] = selected ? selected.value : "Not Answered";
+                if (selected && selected.value === answers[i]) {
+                    score++;
+                }
+            }
+            alert("Your Score: " + score + " / 50");
+        }
+    </script>
+</head>
+<body onload="startTimer()">
+    <div class="container">
+        <h2>C Programming MCQ Exam</h2>
+        <div class="timer" id="timer">Time Left: 60m 0s</div>
+        <form id="quizForm" onsubmit="event.preventDefault(); submitExam();">
+            <div id="questions-container"></div>
+            <script>
+                let questions = [
+                    "Which of the following is a valid identifier in C?",
+                    "What will be the output of printf('%d', 5 + 'A');?",
+                    "Which of the following is used to define a constant in C?",
+                    "Which operator is used to allocate memory dynamically in C?",
+                    "Which data type is used to store a single character?"
+                ];
+                let options = [
+                    ["123abc", "_variable1", "int", "float-num"],
+                    ["A5", "70", "5A", "Compilation Error"],
+                    ["#define", "const", "static", "final"],
+                    ["malloc", "alloc", "new", "create"],
+                    ["char", "int", "float", "double"]
+                ];
+                let container = document.getElementById("questions-container");
+                for (let i = 1; i <= 50; i++) {
+                    let div = document.createElement("div");
+                    div.className = "question";
+                    div.innerHTML = `<p>${i}. ${questions[(i - 1) % questions.length]}</p>`;
+                    options[(i - 1) % options.length].forEach((opt, index) => {
+                        div.innerHTML += `<input type="radio" name="q${i}" value="${String.fromCharCode(97 + index)}"> ${opt} <br>`;
+                    });
+                    container.appendChild(div);
+                }
+            </script>
+            <button type="submit" class="submit-btn">Submit Exam</button>
+        </form>
+    </div>
+</body>
+</html>
